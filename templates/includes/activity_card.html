@@ -1,0 +1,59 @@
+<div class="card border-top-0">
+    <div class="row card-title-row gx-5">
+        <span class='col-12 card-title bg-success text-white text-center'>
+            <a href="/activities/{{activity.id}}" class="card-title-link">{{activity.name}}</a>
+        </span>
+    </div>
+    <div class="row">
+        <span class="text-muted h5"> Challenge 
+            <a href="/challenges/{{activity.challenge.id}}">{{activity.challenge.name}}</a> 
+            {% if activity.was_completed %} completed {% else %} attempted {% endif %} by
+            <a href="/users/{{activity.user.id}}">{{activity.user.first_name}}
+                {{activity.user.last_name}}
+            </a> 
+            on {{activity.get_processed_datetime_string()}}
+        </span>
+    </div>
+    <div class='row card-body'>
+        <br>
+        <span class='col-12 col-md-3'>
+            <span class='h4'>Stats</span>
+            <br>
+            <div class="row">
+                <div class="statistics col-6 col-md-12">Found all landmarks? {% if activity.was_successful %} Yes {% else %} No {% endif %}</div>
+                {% if activity.gpx %}
+                <br>
+                <div class="statistics col-6 col-md-12">Duration: {{activity.gpx.statistics['duration']}}</div>
+                <br>
+                <div class="statistics col-6 col-md-12">Climb: {{activity.gpx.statistics['climb']}}</div>
+                <br>
+                <div class="statistics col-6 col-md-12">Descent: {{activity.gpx.statistics['descent']}}</div>
+                <br>
+                <div class="statistics col-6 col-md-12">Minimum Elevation: {{activity.gpx.statistics['min_elevation']}}</div>
+                <br>
+                <div class="statistics col-6 col-md-12">Maximum Elevation: {{activity.gpx.statistics['max_elevation']}}</div>
+            </div>
+            {% endif %}
+        </span>
+        <span class="col-0 col-md-1">
+        </span>
+        <span class='col-12 col-md-8'>
+            {% include 'includes/activity_card_images.html' %}
+        </span>
+    </div>
+    <div class="row gx-0">
+        <a href="/activities/{{activity.id}}" class="btn btn-block btn-light">See more...</a>
+    </div>
+    {% if g.user.id == activity.user_id or g.user.is_admin() %}
+        <div>
+            <br>
+        </div>
+        
+        <form action="/activities/{{activity.id}}/delete" method="POST">
+            <div class="row gx-0">
+                <button class="btn btn-light btn-block">Delete Activity</button>
+            </div>
+        </form>
+    
+    {% endif %}
+</div>

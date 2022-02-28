@@ -1,0 +1,202 @@
+<h4 id='pack-list'>Click to Start Packing!</h4>
+<table id="pack-table"style="display:none;" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Weight</th>
+            <th>In Car?</th>
+            <th>On Body?</th>
+            <th>In Backpack?</th>
+            <th>Quantity in Car?</th>
+            <th>Quantity Worn?</th>
+            <th>Quantity in Pack?</th>
+        </tr>
+    </thead>
+    <tbody id="pack-list-body">
+
+    </tbody>
+</table>
+
+{% include 'includes/axios_headers.html' %}
+<script>
+    let packList = document.querySelector("#pack-list");
+    let packTable = document.querySelector("#pack-table");
+    let alreadyLoadedGear = false;
+    let user_gear = null;
+
+    function addGearToTable(item, rowNumber){
+        let tbody = document.querySelector("#pack-list-body");
+        let input;
+        let local_tr = document.createElement('tr');
+        let local_th = document.createElement('th');
+        local_th.innerText = item.name;
+        local_tr.append(local_th);
+
+        let local_td = document.createElement('td');
+        local_td.innerText = item.weight;
+        local_tr.append(local_td);
+
+        locations = ['car', 'body', 'pack']
+        for (let i = 0; i < 3; i++){
+            local_td = document.createElement('td');
+            input = document.createElement('input');
+            input.id = `${locations[i]}-${rowNumber}`;
+            input.value = "0";
+            input.setAttribute('type', 'checkbox');
+            input.addEventListener('click', evnt =>{
+                let location = evnt.target.id.split("-")[0];
+                quantityElement = document.querySelector(`#${location}-quantity-${rowNumber}`);
+                quantityElement.value = Math.max(1, parseFloat(quantityElement.value));
+                computeFinalRow();
+            })
+
+            local_td.append(input);
+            local_tr.append(local_td);
+        }
+        for (let i = 0; i<3; i++){
+            local_td = document.createElement('td');
+            input = document.createElement('input');
+            input.id = `${locations[i]}-quantity-${rowNumber}`;
+            input.value = "0";
+            input.classList.add("gear-quantity-box");
+            input.setAttribute('type', 'text');
+            local_td.append(input);
+            local_td.addEventListener('change', evnt =>{
+                let newValue = parseFloat(evnt.target.value);
+                let location = evnt.target.id.split("-")[0];
+                let checkbox = document.querySelector(`#${location}-${rowNumber}`);
+                if (newValue == 0){
+                    checkbox.checked = false;
+                } else {
+                    checkbox.checked = true;
+                }
+                computeFinalRow();
+            })
+            local_tr.append(local_td);
+        }
+        tbody.append(local_tr);
+    }
+
+    function addSummaryRow(){
+        let local_td ;
+        let local_tr = document.createElement('tr');
+        let local_tbody = document.querySelector("#pack-list-body");
+
+        let local_th = document.createElement('th');
+        local_th.innerText = "Totals :";
+        local_tr.append(local_th);
+
+        // create blank entry
+        local_td = document.createElement('td');
+        local_tr.append(local_td);
+
+        local_td = document.createElement('td');
+        local_td.innerText = `0`;
+        local_td.id = "total-weight-value"
+        local_tr.append(local_td);
+
+        local_td = document.createElement('td');
+        local_td.innerText = `0`;
+        local_td.id = "body-weight-value"
+        local_tr.append(local_td);
+
+        local_td = document.createElement('td');
+        local_td.innerText = `0`;
+        local_td.id = "pack-weight-value"
+        local_tr.append(local_td);
+
+        local_tbody.append(local_tr)
+    }
+    function computeFinalRow(){
+        let local_tbody = document.querySelector("#pack-list-body");
+        let total_weight = 0;
+        let body_weight = 0;
+        let pack_weight = 0;
+        let numItems;
+
+        let local_tr = document.createElement('tr');
+        let rowNumber = 0;
+        for (let row of local_tbody.children){
+            if (row.children[0].innerText === "Totals :"){
+                break;
+            }
+            itemWeight = parseFloat(row.children[1].outerText)
+
+            if (row.children[2].children[0].checked){
+                // in car weight
+                numItems =  parseFloat(row.children[5].firstChild.value);
+                total_weight += numItems * itemWeight;
+            }
+            if (row.children[3].children[0].checked){
+                // on body weight
+                numItems =  parseFloat(row.children[6].firstChild.value);
+                body_weight += numItems * itemWeight;
+            }
+            if (row.children[4].children[0].checked){
+                // in pack weight
+                numItems =  parseFloat(row.children[7].firstChild.value);
+                pack_weight += numItems * itemWeight;
+            }
+            rowNumber++;
+        }
+        let twv = document.querySelector('#total-weight-value')
+        twv.innerText = total_weight;
+
+        let bwv = document.querySelector('#body-weight-value')
+        bwv.innerText = body_weight;
+
+        let pwv = document.querySelector('#pack-weight-value')
+        pwv.innerText = pack_weight;
+    };
+    function encourageUserToAddGear(){
+        h6 = document.createElement('h6');
+        h6.innerHTML = `Visit your <large><a href="/gearshed">Gear Shed</a></large>, add some gear, and plan your activity!`
+        packList.append(h6);
+        packTable.style.display = "none";
+    }
+    function encourageUserToLogin(){
+        h6 = document.createElement('h6');
+        h6.innerHTML = `Visit the <large><a href="/login">Login Page</a></large>, to login, add some gear, and plan your activity!`
+        packList.append(h6);
+        packTable.style.display = "none";
+    }
+    packList.addEventListener('click', async evnt=>{
+        url = "/API/gearshed/{{g.user.id}}";
+        if (!alreadyLoadedGear){
+            // load gear from API
+            if (url === "/API/gearshed/"){
+                // no user is logged in
+                alreadyLoadedGear = true;
+                encourageUserToLogin()
+                return
+            }
+
+            response = await axios.get(url);
+            if (response.status === 200){
+                user_gear = response.data[0].gear_list;
+                alreadyLoadedGear = true;
+                if (user_gear.length < 1 || user_gear == undefined) {
+                    encourageUserToAddGear()
+                    
+                } else {
+                    let rowNumber = 0;
+                    for (let item of user_gear){
+                        addGearToTable(item, rowNumber);
+                        rowNumber++;
+                    }
+                    addSummaryRow()
+                    if (evnt.target.id === "pack-list"){
+                        if (packTable.style.display === "none") {
+                        packTable.style.display = "block";
+                        } else {
+                            packTable.style.display = "none";
+                        }
+                        return
+                    }
+                }
+            }
+            
+        } 
+    
+    })
+</script>

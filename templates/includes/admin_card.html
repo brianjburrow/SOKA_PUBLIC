@@ -1,0 +1,51 @@
+<div class='card border-top-0'>
+    <div class="row card-title-row gx-5 gy-6">
+        <span class='col-12 card-title bg-success text-white text-center'>
+            <a href="/users/{{user.id}}" class="card-title-link">{{user.first_name}} {{user.last_name}}</a>
+        </span>
+    </div>
+    
+    <div class="row">
+        <span class='col-lg-4 text-center d-md-none d-lg-block'>Activities</span>
+        <span class='col-lg-4 text-center d-md-none d-lg-block'>Following</span>
+        <span class='col-lg-4 text-center d-md-none d-lg-block'>Followers</span>
+    </div>
+    <div class="row">
+        <span class='col-lg-4 text-center d-md-none d-lg-block'>{{user.activities | length}}</span>
+        <span class='col-lg-4 text-center d-md-none d-lg-block'>{{user.following | length}}</span>
+        <span class='col-lg-4 text-center d-md-none d-lg-block'>{{user.followers | length}}</span>
+    </div>
+    <br>
+    <div class="row card-body">
+        {% include 'includes/user_card_images.html' %}
+    </div>
+    <div class="row gx-0">
+        {% if user in g.user.following %}
+        <a href=""></a>
+        <button id="{{g.user.id}}-{{user.id}}" class='btn btn-light btn-block'>Unfollow Athlete</button>
+        {% elif user == g.user %}
+        <div class="row gx-0">
+            <a href="/users/{{user.id}}/edit" class="btn btn-light btn-block">Edit Account</a>
+        </div>
+        <br>
+        <div class="row">
+            <br>
+        </div>
+        <div class="row gx-0">
+            <a href="/activities/new" class="btn btn-light btn-block">Upload Activity</a>
+        </div>
+        {% endif %}
+        {% if g.user.is_admin() %}
+        <div class="row">
+            <br>
+        </div>
+        <form action="/users/{{g.user.id}}/delete" method="POST"></form>
+        <div class="row gx-0">
+                <button id='delete-account-btn' class="btn btn-light btn-block">Delete Account</button>
+        </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+{% include 'includes/axios_headers.html' %}

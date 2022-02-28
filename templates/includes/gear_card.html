@@ -1,0 +1,22 @@
+<div class='card border-top-0'>
+    <div class="row card-title-row gx-5">
+        <span class='col-12 card-title bg-secondary text-white text-center'>
+            <a href="{{item.store_url}}" class="card-title-link">{{item.name}}</a>
+        </span>
+    </div>
+
+    <div class="row card-body text-center">
+        {{item.description}}
+    </div>
+    {% if item.store_url %}
+    <div class="row gx-0 mt-2">
+        <a href="{{item.store_url}}" class = "btn btn-light btn-block">Visit our store</a>
+    </div>
+    {% endif %}
+    {% if g.user %}
+    <div class="row gx-0 mt-2">
+        <a href="/gear/{{item.id}}/edit" class="btn btn-light btn-block">Edit Gear</a>
+    </div>
+    {% endif %}
+</div>
+            

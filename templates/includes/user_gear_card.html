@@ -1,0 +1,21 @@
+<div class='card'>
+    <div class="row card-title-row gx-5">
+        <span class='col-12 card-title bg-secondary text-white text-center'>
+            <a href="{{item.store_url}}" class="card-title-link">{{item.name}}</a>
+        </span>
+    </div>
+    <div class="row card-body text-center">
+        {{item.brand}} - {{item.model}}
+    </div>
+    <div class="row card-body text-center">
+        Item weight: {{item.weight}}
+    </div>
+    <div class="row card-body text-center">
+        Hours used: {{item.time_used}}
+    </div>
+
+    <div class="row gx-0 mt-2">
+        <a href="/gear/{{item.id}}/edit" class="btn btn-light btn-block">Edit Gear</a>
+    </div>
+</div>
+            

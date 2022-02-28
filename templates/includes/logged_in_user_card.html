@@ -1,0 +1,50 @@
+{% if g.user %}
+<div class='card border-top-0'>
+    <div class="row card-title-row gx-5">
+        <span class='col-12 card-title bg-success text-white text-center'>
+            <a href="/users/{{g.user.id}}" class="card-title-link">{{g.user.first_name}} {{g.user.last_name}}</a>
+        </span>
+    </div>
+    <div class="row">
+        <span class='col-4 text-center d-none d-xl-block'>Activities</span>
+        <span class='col-4 text-center d-none d-xl-block'>Following</span>
+        <span class='col-4 text-center d-none d-xl-block'>Followers</span>
+    </div>
+    <div class="row">
+        <span class='col-4 text-center d-none d-xl-block'>{{g.user.activities | length}}</span>
+        <span class='col-4 text-center d-none d-xl-block'>{{g.user.following | length}}</span>
+        <span class='col-4 text-center d-none d-xl-block'>{{g.user.followers | length}}</span>
+    </div>
+    {% set user = g.user %}
+    <div class="row card-body">
+        {% include 'includes/user_card_images.html' %}
+    </div>
+
+    <div class="row gx-0">
+        <a href="/activities/new" class='btn btn-block btn-light'>Upload Activity</a>
+    </div>
+
+    {% if allow_challenge_upload or (g.user and g.user.is_admin()) %}
+    <br>
+    <div class="row gx-0">
+        <a href="/challenges/new" class="btn btn-block btn-light">Create Challenge</a>
+    </div>
+    {% endif %}
+
+    {% if allow_landmark_upload or (g.user and g.user.is_admin()) %}
+    <br>
+    <div class="row gx-0">
+        <a href="/landmarks/new" class="btn btn-block btn-light">Create Landmark</a>
+    </div>
+    {% endif %}
+
+    {% if allow_user_gear_upload or (g.user and g.user.is_admin()) %} 
+    <br>
+    <div class="row gx-0">
+        <a href="/gearshed/new" class="btn btn-block btn-light">Upload your gear!</a>
+    </div>
+    {% endif %}
+</div>
+{% else %}
+{% include 'includes/register_card.html' %}
+{% endif %}

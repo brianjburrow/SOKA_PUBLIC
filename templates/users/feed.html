@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Feed
+{% endblock %}
+
+{% block content %}
+
+
+<br>
+<div class="row">
+    <span class="col-3 d-none d-lg-block">
+        {% include 'includes/logged_in_user_card.html' %}
+    </span>
+    <span class="col-lg-1"></span>
+    <span class='col-sm-12 col-lg-7'>
+            {% for activity in activities %}
+            {% include 'includes/activity_card.html' %}
+            {% endfor %}
+    </span>
+    <span class="col-lg-1"></span>
+</div>
+
+
+{% endblock %}

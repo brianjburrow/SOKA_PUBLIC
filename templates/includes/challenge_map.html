@@ -1,0 +1,45 @@
+<div id="map"></div>
+
+<script>
+
+    mapboxgl.accessToken = {% include 'includes/mapbox_api_key.html' %};
+
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+        zoom: 10, // starting zoom
+        center: [{{ map_options.longitude_min | tojson }}, {{ map_options.latitude_min | tojson }}] // starting position
+    });
+
+    map.on('load', () => {
+        // Load an image from an external URL.
+        let marker;
+        let className;
+        let popup
+        let el;
+        {% for landmark in challenge.landmarks %}
+
+        // Create a DOM element for each marker.
+        el = document.createElement('div');
+        el.className = 'marker';
+        el.style.backgroundImage = `url({{landmark.img_url | tojson}})`;
+        el.style.width = `10vw`;
+        el.style.height = `10vh`;
+        el.style.backgroundSize = '100%';
+
+        el.addEventListener('click', () => {
+            window.alert('{{landmark.name | tojson}}');
+        });
+
+        // Add markers to the map.
+        new mapboxgl.Marker(el)
+            .setLngLat({{ landmark.get_gps_coordinates() | tojson }})
+        .addTo(map);
+    {% endfor %}
+
+    map.fitBounds([[{{ map_options.longitude_min | tojson }}, {{ map_options.latitude_min | tojson }}],
+    [{{ map_options.longitude_max | tojson }}, {{ map_options.latitude_max | tojson }}]])
+    });
+
+
+</script>

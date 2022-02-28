@@ -1,0 +1,33 @@
+{% if challenge.landmarks | length == 1 %}
+
+<div class="col-12">
+        {% for landmark in challenge.landmarks %}
+        <a href="/landmarks/{{landmark.id}}"><img src="{{landmark.img_url}}" class="w-100 shadow-1-strong rounded mb-4"
+                alt="{{landmark.name}}" /></a>
+        {% endfor %}
+</div>
+
+{% else %}
+
+<div class="col-lg-6 col-md-6 col-sm-12">
+{% for landmark in challenge.landmarks %}
+{% if (loop.index % 2 != 0) and (loop.index
+< 5) %} <a href="/landmarks/{{landmark.id}}"><img src="{{landmark.img_url}}"
+        class="w-100 shadow-1-strong rounded mb-4" alt="{{landmark.name}}" /></a>
+        {% endif %}
+        {% endfor %}
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-12">
+{% for landmark in challenge.landmarks %}
+{% if (loop.index % 2==0) and (loop.index
+< 5) %} <a href="/landmarks/{{landmark.id}}"><img src="{{landmark.img_url}}"
+        class="w-100 shadow-1-strong rounded mb-4" alt="{{landmark.name}}" /></a>
+
+        {% endif %}
+        {% endfor %}
+</div>
+{% if challenge.landmarks | length > 4 %}
+<a href="/challenges/{{challenge.id}}">And more...</a>
+{% endif %}
+{% endif %}

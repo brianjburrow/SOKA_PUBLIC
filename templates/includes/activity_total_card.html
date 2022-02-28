@@ -1,0 +1,197 @@
+ <div class="card border-top-0" id="activity-card">
+        <div class="row card-title-row gx-5">
+            <span class='col-12 card-title bg-success text-white text-center'>
+                {{activity.name}}
+            </span>
+        </div>
+        <div class="row">
+            <span class="text-muted h5"> Challenge 
+                <a href="/challenges/{{activity.challenge.id}}">{{activity.challenge.name}}</a> 
+                {% if activity.was_completed %} completed {% else %} attempted {% endif %} by
+                <a href="/users/{{activity.user.id}}">{{activity.user.first_name}}
+                    {{activity.user.last_name}}
+                </a> 
+                on {{activity.get_processed_datetime_string()}}
+            </span>
+        </div>
+        <div class="row card-body">
+            <span class="col-12 col-md-7 mb-2">
+                {% if activity.gps_file %}
+                    {% include 'includes/map.html' %}
+                {% elif activity.challenge.name != 'None' %} 
+                    <h4>Landmarks on this challenge</h4>
+                    <ul>
+                        {% for landmark in activity.challenge.landmarks %} 
+                        <li><a href="/landmarks/{{landmark.id}}">{{landmark.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %} 
+                    No GPS data or Challenge selected for this activity.
+                {% endif %}
+            </span>
+
+            <span class='col-12 col-md-5'>
+                {% if activity.images | length > 0 %}
+                    {% include 'includes/activity_card_images.html' %}
+                {% else %}
+                No images to display for this activity 
+                {% endif %}
+            </span>
+        </div>
+        <div class='row card-body mb-2'>
+            <div class="row card-body">
+                <span class='h4'>Stats</span>
+            </div>
+            {% if activity.gps_file %}
+            <span class='col-6'>
+                <span class="statistics">Completed? {% if activity.was_successful %} Yes {% else %} No {% endif %}</span>
+                <br>
+                <span class="statistics">Duration: {{activity.gpx.statistics['duration']}}</span>
+                <br>
+                <span class="statistics">Climb: {{activity.gpx.statistics['climb']}}</span>
+            </span>
+            <span class='col-6'>
+                <span class="statistics">Descent: {{activity.gpx.statistics['descent']}}</span>
+                <br>
+                <span class="statistics">Min. Elevation: {{activity.gpx.statistics['min_elevation']}}</span>
+                <br>
+                <span class="statistics">Max. Elevation: {{activity.gpx.statistics['max_elevation']}}</span>
+            </span>
+
+            {% else %} 
+            <span class="statistics">Found all landmarks? {% if activity.was_completed %} Yes {% else %} No {% endif %}</span>
+            {% endif %}
+        </div>
+
+        <div class='row card-body mb-2'>
+            {% if activity.gear %}
+                <span class="col-12 col-md-4">
+                    <h4>Recommended Gear Used</h4>
+                    <ul>
+                        {% for item in activity.gear %}
+                            {% if item in activity.challenge.gear %}
+                                <li>
+                                    <a href="/gear/{{item.store_url}}">{{item.name}}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </span>
+
+                <span class="col-12 col-md-4">
+                    <h4>Recommended Gear Skipped</h4>
+                    <ul>
+                        {% for item in activity.challenge.gear %}
+                            {% if item not in activity.gear %}
+                                <li>
+                                    <a href="/gear/{{item.store_url}}">{{item.name}}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </span>
+
+                <span class="col-12 col-md-4">
+                    <h4>Additional Gear Used</h5>
+                        <ul>
+                            {% for item in activity.gear %}
+                                {% if item not in activity.challenge.gear %}
+                                    <li>
+                                        <a href="/gear/{{item.store_url}}">{{item.name}}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                </span>
+            {% else %} 
+            
+            <span class="col-12">
+                <h4>Recommended Gear Skipped</h4>
+                <ul>
+                    {% for item in activity.challenge.gear %}
+                        {% if item not in activity.gear %}
+                            <li>
+                                <a href="/gear/{{item.store_url}}">{{item.name}}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </span>
+
+            {% endif %}
+        </div>
+
+        <div class="row card-body gx-0">
+            <span class="h4">Comments</span>
+            <span id="comment-list">
+                {% for comment in activity.comments %}
+                    {% include 'includes/comment_card.html' %}
+                {% endfor %}
+            </span>
+            <br>
+        </div>
+
+        <div class="row gx-0">
+            <form action="" id="{{activity.id}}-comment-form" method="POST">
+                <textarea class="form-control" name="comment-text-area" id="comment-text-area"></textarea>
+                <div class="row gx-0">
+                    <button type="submit" class="btn btn-light btn-block">Comment</button>
+                </div>
+            </form>
+        </div>
+        {% if g.user.id == activity.user_id or g.user.is_admin() %}
+        <div>
+            <br>
+        </div>
+        <div class="row gx-0">
+            <form action="/activities/{{activity.id}}/delete" method="POST">
+                <div class="row">
+                    <button class="btn btn-light btn-block">Delete Activity</button>
+                </div>  
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+{% include 'includes/axios_headers.html' %}
+<script>
+    let activity_card = document.querySelector('#activity-card');
+    let comment_list = document.querySelector('#comment-list');
+    const URL = "/API/comment/"
+
+    activity_card.addEventListener('submit', async (evnt)=>{
+
+        evnt.preventDefault();
+        let comment = document.querySelector("#comment-text-area");
+
+        let user_id = "{{g.user.id}}";
+        let first_name = "{{g.user.first_name}}";
+        let last_name = "{{g.user.last_name}}";
+        let activity_id = "{{activity.id}}"
+
+        let data = {user_id: user_id,
+        activity_id: activity_id,
+        comment:comment.value};
+
+        try{
+            let response = await axios.post(URL, data = data);
+            let div = document.createElement("div");
+            div.classList.add("card");
+            div.classList.add("comment-card");
+            div.classList.add("card-body");
+            div.innerHTML = `<div class="row">
+                                    <a href="/users/${user_id}">${first_name} ${last_name}</a>
+                            </div>
+                            <div class="row card-body">
+                                        ${comment.value}
+                            </div>`
+            
+            comment_list.append(div);
+            comment.value = "";
+        } catch {
+            alert("There was an error during submission, please try again.")
+        }
+            
+
+    });
+</script>

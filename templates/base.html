@@ -1,0 +1,19 @@
+  <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'includes/base_headers.html' %}
+</head>
+
+<body>
+  {% include 'includes/navbar.html' %}
+<div class="main-body">
+  <br>
+  {% block content %}
+  {% endblock %}
+
+  {% include 'includes/base_scripts.html' %}
+</div>
+</body>
+
+</html>

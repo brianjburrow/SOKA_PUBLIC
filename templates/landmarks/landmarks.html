@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Landmarks
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <span class="col-12 col-lg-3">
+        {% include 'includes/logged_in_user_card.html' %}
+    </span>
+    <span class="col-0 col-lg-1"></span>
+    <span class='col-12 col-lg-8 gx-0'>
+        <div class="row">
+            {% for landmark in landmarks %}
+            <div class="col-0 col-lg-1 col-xxl-1"></div>
+            <div class="col-12 col-lg-5 col-xxl-3">
+                {% include 'includes/landmark_card.html' %}
+            </div>
+            {% endfor %}
+        </div>
+    </span>
+</div>
+
+{% endblock %}

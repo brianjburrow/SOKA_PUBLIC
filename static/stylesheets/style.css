@@ -1,0 +1,123 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover{
+  color: #00b3db;
+  text-decoration: none;
+}
+
+.btn-light:hover, .btn-hover:focus, .btn-hover:active, .btn-hover.active, .open>.dropdown-toggle.btn-hover {
+  color: #fff;
+  background-color: #00b3db;
+  border-color: #285e8e; /*set the color you want here*/
+}
+
+
+small{
+  font-size:0.75em;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #F4FAFF;
+}
+
+
+/*classes*/
+.gear-quantity-box{
+  width: 3vw;
+}
+
+.danger {
+  color:red;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: greenyellow;
+}
+
+
+.card{
+  background-color: #DEE7E7;
+  margin-bottom:4em;
+  border-radius:0.25em;
+  padding:0em;
+}
+
+.comment-card{
+  background-color: #DEE7E7;
+  border-color:#DEE7E7;
+}
+
+.comment-card-title{
+  font-size: 0.5em;
+}
+
+.register-card{
+  background-color: #DEE7E7;
+  margin-bottom:1em;
+  border-radius:0.25em;
+  padding:1em;
+  margin-left:1em;
+}
+
+
+.landmark-card-image{
+  width:100%;
+}
+.main-body{
+  padding-left: 4em;
+  padding-right: 4em;
+}
+
+.card-title{
+  font-size: 1.25em;
+  border-radius:15px 15px 50px 50px !important;
+}
+
+.card-body{
+  padding:1em;
+  padding-bottom:0;
+  margin-bottom:0;
+}
+
+.statistics{
+  margin-top:0.75em;
+  display: inline-block;
+}
+
+.onboarding{
+  margin-top: 12vh;
+}
+
+.card-title-link{
+  color: white;
+}
+
+.card-title-row{
+  margin-top:0; 
+  padding: 0;
+  margin-bottom:0.5em;
+}
+
+/*IDS*/
+#map {
+  width: 100%;
+  height: 20vw;
+}
+

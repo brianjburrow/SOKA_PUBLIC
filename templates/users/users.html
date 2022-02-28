@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Users
+{% endblock %}
+
+{% block content %}
+<div class="row user-list">
+    <span class="col-12 col-lg-3">
+        {% include 'includes/logged_in_user_card.html' %}
+    </span>
+    <span class="col-0 col-lg-1"></span>
+    <span class='col-12 col-lg-8 gx-0'>
+        <div class="row">
+            {% for user in users %}
+            {% if user.id != g.user.id %}
+            <div class="col-0 col-lg-1"></div>
+            <div class="col-12 col-lg-5">
+                {% include 'includes/user_card.html' %}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </span>
+</div>
+
+{% include 'includes/axios_headers.html' %}
+<script>
+    ul = $('.user-list')
+    console.log(ul)
+    ul.on('click', async (evt) => {
+        console.log('evtout', evt)
+        if (evt.target.nodeName === 'BUTTON') {
+            evt.preventDefault()
+            console.log(evt)
+            console.log(evt.target)
+            element = evt.target
+            method = element.textContent === 'Follow Athlete' ? 'post' : 'delete'
+            element.textContent = element.textContent === 'Follow Athlete' ? 'Unfollow Athlete' : 'Follow Athlete';
+            console.log(element)
+            user_ids = element.id.split('-')
+            if (method === 'post') {
+                res = await axios.post(`users/${user_ids[0]}/${user_ids[1]}`)
+            } else {
+                res = await axios.delete(`users/${user_ids[0]}/${user_ids[1]}`)
+            }
+            console.log(res)
+        }
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,252 @@
+{% if show_map %}
+<h4 id='current-weather'>Click to See Current Weather</h4>
+<table id="current-weather-table" style="display:none;" class="table table-striped">
+</table>
+
+<h4 id='weather-forecast'>Click to See Weather Forecast</h4>
+<div id="forecast-containter" style="display:none;">
+    <table id="weather-forecast-table" class="table table-striped">
+    </table>
+    <div class="row">
+        <div class="col-2"></div>
+        <button id="previous-button" class="btn btn-light col-2">Previous</button>
+        <div class="col-4"></div>
+        <button id="next-button" class="btn btn-light btn-block col-2">Next</button>
+        <div class="col-2"></div>
+    </div>
+</div>
+{% endif %}
+</div>
+
+{% include 'includes/axios_headers.html' %}
+<script>
+// pull in some DOM elements. set a flag to stop user from requesting the same data repeatedly
+let current_weather_header = document.querySelector('#current-weather');
+let weather_forecast_header = document.querySelector('#weather-forecast');
+let nextButton = document.querySelector("#next-button");
+let previousButton = document.querySelector("#previous-button");
+
+let already_loaded_weather = false;
+
+// setup variables to store weather data
+let current_weather = {};
+let weather_forecast = {};
+// setup variable to scroll through weather data
+let display_index = 0;
+
+
+async function request_weather_data(landmark_id) {
+    url = `/API/weather/${landmark_id}`
+    response = await axios.get(url);
+    if (response.status == 200) {
+        weather_data = response.data[0]
+        already_loaded_weather = true;
+    } else {
+        // weather API failed for some reason, allow user to retry by clicking the header
+        weather_data = false
+        already_loaded_weather = false;
+    }
+    // store weather information for the landmark
+    current_weather[landmark_id] = weather_data.current_weather;
+    weather_forecast[landmark_id] = weather_data["hourly_weather"];
+
+}
+
+function createCurrentWeatherTable() {
+
+    let current_weather_table = document.querySelector('#current-weather-table');
+    // create the header row
+    let thead = document.createElement("thead");
+    let th;
+    let td;
+    let tr = document.createElement("tr");
+    headers = ['Landmark',"Weather", "Weather Description", 'Timezone', "Sunrise Time", "Sunset Time", "Temperature (F)",
+        "Feels Like (F)", "UV Index", "Visibility (ft)", "Windspeed (mph)"]
+
+    for (let label of headers) {
+        th = document.createElement('th');
+        th.scope = 'col';
+        th.innerText = label;
+        tr.append(th)
+    }
+    thead.append(tr);
+    current_weather_table.append(thead);
+
+    //add data rows
+    keys = ['main', 'description', "timezone", 'sunrise', 'sunset', 'temp', 'feels_like', 'uvi', 'visibility', 'wind_speed']
+    let tbody = document.createElement("tbody")
+    {% for landmark in landmarks %}
+    tr = document.createElement('tr');
+    th = document.createElement('th');
+    th.scope = "row"
+    th.innerText = "{{landmark.name}}";
+    tr.append(th)
+    data = current_weather[{{ landmark.id }}]
+    for (let key of keys){
+        td = document.createElement('td');
+        td.innerText = data[key];
+        tr.append(td);
+    }
+    tbody.append(tr);
+    {% endfor %}
+    current_weather_table.append(tbody)
+    return current_weather_table
+}
+
+function clearWeatherForecastTable(){
+    // code adopted from https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
+    table = document.querySelector("#weather-forecast-table")
+    while (table.firstChild){
+        table.removeChild(table.lastChild);
+    }
+}
+
+
+function createWeatherForecastTable() {
+
+    let weather_forecast_table = document.querySelector('#weather-forecast-table');
+    // create the header row
+    let thead = document.createElement("thead");
+    let th;
+    let td;
+    let tr = document.createElement("tr");
+    let headers = ['Landmark','Timezone']
+    let landmark_id = {{landmarks[0].id}};
+
+
+    for (let idx = display_index; idx < display_index + 6; idx++){
+        data = weather_forecast[landmark_id][idx];
+        headers.push(data["dt"]);
+    }
+
+    for (let label of headers) {
+        th = document.createElement('th');
+        th.scope = 'col';
+        th.innerText = label;
+        tr.append(th)
+    }
+
+    thead.append(tr);
+    weather_forecast_table.append(thead);
+
+
+    // make the body
+    let tbody = document.createElement('tbody');
+
+    {% for landmark in landmarks %} 
+    tr = document.createElement('tr');
+    th = document.createElement("th");
+    th.scope = 'row';
+    th.innerText = "{{landmark.name}}";
+    tr.append(th)
+    data = weather_forecast[{{landmark.id}}]
+
+    td = document.createElement('td');
+    td.innerText = current_weather[{{landmark.id}}].timezone;
+
+    tr.append(td)
+    
+    for (let idx = display_index; idx < display_index + 6; idx++){
+        td = document.createElement("td");
+        ul = document.createElement('ul');
+
+        // add temp
+        li = document.createElement('li');
+        li.innerText = `Temp (F): ${data[idx].temp}`;
+        ul.append(li);
+
+        // add feels_like
+        li = document.createElement('li');
+        li.innerText = `Feels Like (F): ${data[idx].feels_like}`;
+        ul.append(li);
+
+        // add UVI
+        li = document.createElement('li');
+        li.innerText = `UV Index: ${data[idx].uvi}`;
+        ul.append(li);
+
+        // add temp
+        li = document.createElement('li');
+        li.innerText = `Vilibility: ${data[idx].visibility}`;
+        ul.append(li);
+
+        // add temp
+        li = document.createElement('li');
+        li.innerText = `Wind Speed: ${data[idx].wind_speed}`;
+        ul.append(li);
+
+        td.append(ul);
+        tr.append(td);
+    }
+    tbody.append(tr);
+
+    weather_forecast_table.append(tbody);
+    {% endfor %}
+    return weather_forecast_table
+}
+
+
+    previousButton.addEventListener('click', evnt =>{
+    evnt.preventDefault();
+    if (display_index == 0) return;
+    display_index--;
+    clearWeatherForecastTable()
+    createWeatherForecastTable();
+});
+
+
+
+    nextButton.addEventListener('click', evnt =>{
+    evnt.preventDefault();
+    if (display_index == 42) return;
+    display_index++;
+    clearWeatherForecastTable()
+    createWeatherForecastTable();
+    });
+
+
+current_weather_header.addEventListener('click', async (event) => {
+    if (already_loaded_weather) {
+        let table = document.querySelector("#current-weather-table")
+        if (table.style.display === "none") {
+            table.style.display = "block";
+        } else {
+            table.style.display = "none";
+        }
+        return
+    } else {
+        // get weather information
+        {% for landmark in landmarks %}
+            await request_weather_data({{ landmark.id }});
+        {% endfor %}
+        let table = createCurrentWeatherTable()
+        table.style.display = 'block'
+        createWeatherForecastTable()
+    }
+});
+
+weather_forecast_header.addEventListener('click', async (event) => {
+
+    let div = document.querySelector("#forecast-containter")
+    if (already_loaded_weather) {
+        if (div.style.display === "none") {
+
+            div.style.display = "block";
+        } else {
+
+            div.style.display = "none";
+        }
+        return
+    } else {
+        // get weather information
+        {% for landmark in landmarks %}
+            await request_weather_data({{ landmark.id }});
+        {% endfor %}
+        createWeatherForecastTable();
+
+        div.style.display = 'block';
+        createCurrentWeatherTable();
+    }
+});
+
+</script>

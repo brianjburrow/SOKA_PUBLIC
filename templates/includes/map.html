@@ -1,0 +1,74 @@
+{% if false %}
+<div>
+    <label for="weather-checkbox"> Show Weather</label>
+    <input type="checkbox" id="weather-checkbox" name="weather-checkbox" value="weather-checkbox">
+</div>
+{% endif %}
+
+<div id='map' class="map"></div>
+
+<script>
+    mapboxgl.accessToken = {% include 'includes/mapbox_api_key.html' %};
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/satellite-v9',
+        zoom: {{ activity.gpx.map_options.zoom | tojson }},
+    center: [{{ activity.gpx.map_options.longitude_min | tojson }}, {{ activity.gpx.map_options.latitude_min | tojson }}]
+    });
+
+    map.on('load', function () {
+        map.addSource('route', {
+            'type': 'geojson',
+            'data': {
+                'type': 'Feature',
+                'properties': {},
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': {{ activity.gpx.map_options.coordinates | tojson }}
+                }
+            }
+        });
+
+    map.addLayer({
+        'id': 'route',
+        'type': 'line',
+        'source': 'route',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': 'red',
+            'line-width': 8
+        }
+    });
+    map.fitBounds([[{{ activity.gpx.map_options.longitude_min | tojson }}, {{ activity.gpx.map_options.latitude_min | tojson }}],
+    [{{ activity.gpx.map_options.longitude_max | tojson }}, {{ activity.gpx.map_options.latitude_max | tojson }}]])
+    });
+
+    {% if false %}
+    checkBox = document.querySelector('#weather-checkbox');
+
+    checkBox.addEventListener('click', event => {
+        if (checkBox.checked) {
+            map.addSource('weather-tiles', {
+                "type": "raster",
+                "tiles": ["https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid={{map_options.OPENWEATHERMAP_API_KEY}}"],
+                "tileSize": 256
+            })
+            map.addLayer({
+                "id": "weather-tiles",
+                "type": "raster",
+                "source": "weather-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            });
+        } else {
+            map.removeLayer("weather-tiles");
+            map.removeSource('weather-tiles');
+        }
+    });
+    {% endif %}
+
+</script>

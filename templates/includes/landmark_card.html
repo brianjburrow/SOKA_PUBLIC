@@ -1,0 +1,40 @@
+<div class="card border-top-0">
+    <div class="row card-title-row gx-5">
+        <span class="col-12 card-title bg-secondary text-white text-center">
+            <a href="/landmarks/{{landmark.id}}" class="card-title-link">{{landmark.name}} </a>
+        </span>
+    </div>
+    <div class="row">
+        <span class="text-muted h5"> 
+            {% if landmark.creator.is_admin() %}
+            Uploaded by <a href="/admin">SOKA</a>
+            {% else %} 
+            Uploaded by <a href="/users/{{landmark.creator.id}}">{{landmark.creator.first_name}} {{landmark.creator.last_name}}</a> 
+            {% endif %}
+        </span>
+    </div>
+    <div class="row text-center">
+        <span>
+            {{landmark.longitude}}, {{landmark.latitude}}
+        </span>
+    </div>
+    <div class="row">
+        <div class="col-12 px-4 mt-2 mb-2">
+            <img src="{{landmark.img_url}}" alt="Image for {{landmark.name}}" class="landmark-card-image">
+        </div>
+    </div>
+
+        {% if g.user.id == landmark.created_by or (g.user and g.user.is_admin()) %}
+        <div class="row gx-0">
+            <a href="/landmarks/{{landmark.id}}/edit" class="btn btn-light btn-block">Edit Landmark</a>
+        </div>
+        <div>
+            <br>
+        </div>
+        <form action="/landmarks/{{landmark.id}}/delete" method="POST">
+            <div class="row gx-0">
+            <button class="btn btn-light btn-block">Delete Landmark</button>
+        </div>
+        </form>
+        {% endif %}
+</div>

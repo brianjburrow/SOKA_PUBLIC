@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Challenges
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <span class="col-12 col-md-3">
+        {% include 'includes/logged_in_user_card.html' %}
+    </span>
+    <span class="col-0 col-md-1"></span>
+    <span class='col-12 col-md-8 gx-0'>
+        <div class="row">
+            {% for challenge in challenges %}
+            {% if challenge.name != 'None' %}
+            <div class="col-0 col-xxl-1"></div>
+            <div class="col-12 col-xxl-5">
+                {% include 'includes/challenge_card.html' %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            
+        </div>
+    </span>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-success ps-5">
+    <a class="navbar-brand" href="#">SOKA</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            {% if g.user %}
+            <li class="nav-item active">
+                <a class="nav-link" href="/users/{{g.user.id}}/feed">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/users/{{g.user.id}}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/users">Users</a>
+            </li>
+            {% else %}
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="/challenges">Challenges</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/landmarks">Landmarks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/gear">Explore Gear</a>
+            </li>
+            {% if g.user %}
+            <li class="nav-item">
+                <a class="nav-link" href="/gearshed">My Gear</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<div class="{{ category }}">{{ message }}</div>
+{% endfor %}
+{% endwith %}

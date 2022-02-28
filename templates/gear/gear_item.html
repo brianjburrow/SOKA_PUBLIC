@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{gear.name}}
+{% endblock %}
+
+{% block content %}
+
+<h1>{{gear.name}}</h1>
+
+<h4>Description</h4>
+{{gear.description}}
+
+<h4>Purchase options</h4>
+
+{{gear.store_url}}
+
+{% endblock %}

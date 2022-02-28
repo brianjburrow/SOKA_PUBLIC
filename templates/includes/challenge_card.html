@@ -1,0 +1,71 @@
+<div class="card border-top-0">
+    <div class="row card-title-row gx-5">
+        <span class='col-12 card-title bg-success text-white text-center'>
+            <a href="/challenges/{{challenge.id}}" class="card-title-link">{{challenge.name}}</a>
+        </span>
+    </div>
+    <div class="row">
+        <span class="text-muted h5"> 
+            {% if challenge.creator.is_admin() %}
+            Uploaded by <a href="/admin">SOKA</a>
+            {% else %} 
+            Uploaded by <a href="/users/{{challenge.creator.id}}">{{challenge.creator.first_name}} {{challenge.creator.last_name}}</a> 
+            {% endif %}
+        </span>
+    </div>
+    <div class="row g-0">
+        <span class="col-1"></span>
+        <div class="col-4 ps-0 pe-4">
+            <h6><a href="/landmarks">Landmarks</a></h6>
+            {% for landmark in challenge.landmarks %}
+                <div><a href="/landmarks/{{landmark.id}}">{{landmark.name}}</a></div>
+            {% endfor %}
+            <br>
+        </div>
+        <span class="col-2"></span>
+        <span class="col-4">
+            <h6>Gear</h6>
+            {% for item in challenge.gear %}
+                <div><a href="{{item.store_url}}">{{item.name}}</a></div>
+            {% endfor %}
+            <br>
+        </span>
+    </div>
+    {% if show_map %}
+    <div class='row pe-4 ps-2'>
+        {% include 'includes/challenge_map.html' %}
+    </div>
+    <div>
+        <br>
+    </div>
+    {% else %}
+    <div class="row card-body">
+            {% include 'includes/challenge_card_images.html' %}
+    </div>
+    {% endif %}
+
+    {% if g.user %}
+    <div class="row gx-0">
+        <a href="/activities/new" class='btn btn-block btn-light'>Upload Challenge Attempt</a>
+    </div>
+    {% endif %}
+    {% if g.user.id == challenge.created_by or (g.user and g.user.is_admin()) %}
+    <br>
+    <div class="row gx-0">
+        <a href="/challenges/{{challenge.id}}/edit" class="btn btn-light btn-block">Edit Challenge</a>
+    </div>
+    <br>
+    <div class="row gx-0">
+        <a href="/challenges/{{challenge.id}}/delete" class="btn btn-light btn-block">Delete Challenge</a>
+    </div>
+    {% endif %}
+
+    {% if show_planning %}
+    <br>
+    <h1>Plan Activity</h1>
+    {% include 'includes/pack_list.html' %}
+    
+    {% include 'includes/weather_forecast.html' %}
+
+    {% endif %}
+</div>

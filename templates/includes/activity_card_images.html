@@ -1,0 +1,36 @@
+{% if activity.images | length == 1 %}
+<div class="row">
+    <div class="col-12">
+        {% for activity_img in activity.images %}
+            <a href="/activities/{{activity.id}}">
+                <img src="{{activity_img.get_activity_image_s3_url(image_size_str = 'large')}}" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% else %}
+
+<div class="row">
+
+    <div class="col-6">
+        {% for activity_img in activity.images %}
+            {% if (loop.index % 2 != 0) and (loop.index < 5) %} 
+                <a href="/activities/{{activity.id}}">
+                    <img src="{{activity_img.get_activity_image_s3_url()}}" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="col-6">
+        {% for activity_img in activity.images %}
+            {% if (loop.index % 2==0) and (loop.index < 5) %} 
+                <a href="/activities/{{activity.id}}">
+                    <img src="{{activity_img.get_activity_image_s3_url()}}" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

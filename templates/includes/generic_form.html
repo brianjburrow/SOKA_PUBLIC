@@ -1,0 +1,19 @@
+<form id="generic-form" method='POST'>
+    {{ form.hidden_tag() }}
+    <!--add type=hidden form fields -->
+
+    {% for field in form if field.widget.input_type != 'hidden' %}
+    <p>
+        {{ field.label }}
+        {{ field(class_="form-control") }}
+
+        {% for error in field.errors %}
+        {{ error }}
+        {% endfor %}
+    </p>
+
+    {% endfor %}
+    <div class="row">
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </div>
+</form>

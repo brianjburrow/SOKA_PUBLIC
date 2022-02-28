@@ -1,0 +1,29 @@
+{% if user_activity_images | length == 1 %}
+<div class="col-12 d-none d-xl-block">
+    {% for activity_img in user.get_recent_images(num_photos_displayed) %}
+        <a href="/activities/{{activity_img.activity_id}}">
+            <img src="{{activity_img.get_activity_image_s3_url()}}" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+        </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="col-6 d-none d-xl-block">
+    {% for activity_img in user.get_recent_images(num_photos_displayed) %}
+        {% if (loop.index % 2 != 0) and (loop.index < 5) %} 
+            <a href="/activities/{{activity_img.activity_id}}">
+                <img src="{{activity_img.get_activity_image_s3_url()}}" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class="col-6 d-none d-xl-block">
+    {% for activity_img in user.get_recent_images(num_photos_displayed) %}
+        {% if (loop.index % 2==0) and (loop.index < 5) %} 
+            <a href="/activities/{{activity_img.activity_id}}">
+                <img src="{{activity_img.get_activity_image_s3_url()}}" class="w-100 shadow-1-strong rounded mb-4" alt="" />
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
