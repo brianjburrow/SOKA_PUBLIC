@@ -6,24 +6,24 @@
     </div>
     
     <div class="row">
-        <span class='col-lg-4 text-center d-md-none d-lg-block'>Activities</span>
-        <span class='col-lg-4 text-center d-md-none d-lg-block'>Following</span>
-        <span class='col-lg-4 text-center d-md-none d-lg-block'>Followers</span>
+        <div class='col-4 text-center d-none d-xl-block'>Activities</div>
+        <div class='col-4 text-center d-none d-xl-block'>Following</div>
+        <div class='col-4 text-center d-none d-xl-block'>Followers</div>
     </div>
     <div class="row">
-        <span class='col-lg-4 text-center d-md-none d-lg-block'>{{user.activities | length}}</span>
-        <span class='col-lg-4 text-center d-md-none d-lg-block'>{{user.following | length}}</span>
-        <span class='col-lg-4 text-center d-md-none d-lg-block'>{{user.followers | length}}</span>
+        <div class='col-4 text-center d-none d-xl-block'>{{user.activities | length}}</div>
+        <div class='col-4 text-center d-none d-xl-block'>{{user.following | length}}</div>
+        <div class='col-4 text-center d-none d-xl-block'>{{user.followers | length}}</div>
     </div>
     <br>
     <div class="row card-body">
-        {% include 'includes/user_card_images.html' %}
+        {% include 'includes/users/user_card_images.html' %}
     </div>
     <div class="row gx-0">
         {% if user in g.user.following %}
         <a href=""></a>
         <button id="{{g.user.id}}-{{user.id}}" class='btn btn-light btn-block'>Unfollow Athlete</button>
-        {% elif user == g.user %}
+        {% elif user == g.user or (g.user and g.user.is_admin())%}
         <div class="row gx-0">
             <a href="/users/{{user.id}}/edit" class="btn btn-light btn-block">Edit Account</a>
         </div>
@@ -34,16 +34,16 @@
         <div class="row gx-0">
             <a href="/activities/new" class="btn btn-light btn-block">Upload Activity</a>
         </div>
-        {% endif %}
-        {% if g.user.is_admin() %}
         <div class="row">
             <br>
         </div>
-        <form action="/users/{{g.user.id}}/delete" method="POST"></form>
+        <form action="/users/{{g.user.id}}/delete" method="POST">
         <div class="row gx-0">
                 <button id='delete-account-btn' class="btn btn-light btn-block">Delete Account</button>
         </div>
         </form>
+        {% else %}
+            <button id="{{g.user.id}}-{{user.id}}" class='btn btn-light btn-block'>Follow Athlete</button>
         {% endif %}
     </div>
 </div>

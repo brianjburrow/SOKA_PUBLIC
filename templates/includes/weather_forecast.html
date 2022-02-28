@@ -19,6 +19,7 @@
 </div>
 
 {% include 'includes/axios_headers.html' %}
+
 <script>
 // pull in some DOM elements. set a flag to stop user from requesting the same data repeatedly
 let current_weather_header = document.querySelector('#current-weather');
@@ -184,8 +185,6 @@ function createWeatherForecastTable() {
     {% endfor %}
     return weather_forecast_table
 }
-
-
     previousButton.addEventListener('click', evnt =>{
     evnt.preventDefault();
     if (display_index == 0) return;

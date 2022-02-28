@@ -17,7 +17,7 @@
     </div>
     {% set user = g.user %}
     <div class="row card-body">
-        {% include 'includes/user_card_images.html' %}
+        {% include 'includes/users/user_card_images.html' %}
     </div>
 
     <div class="row gx-0">
@@ -46,5 +46,5 @@
     {% endif %}
 </div>
 {% else %}
-{% include 'includes/register_card.html' %}
+{% include 'includes/users/register_card.html' %}
 {% endif %}

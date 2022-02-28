@@ -33,14 +33,14 @@
     </div>
     {% if show_map %}
     <div class='row pe-4 ps-2'>
-        {% include 'includes/challenge_map.html' %}
+        {% include 'includes/challenges/challenge_map.html' %}
     </div>
     <div>
         <br>
     </div>
     {% else %}
     <div class="row card-body">
-            {% include 'includes/challenge_card_images.html' %}
+            {% include 'includes/challenges/challenge_card_images.html' %}
     </div>
     {% endif %}
 
@@ -63,7 +63,7 @@
     {% if show_planning %}
     <br>
     <h1>Plan Activity</h1>
-    {% include 'includes/pack_list.html' %}
+    {% include 'includes/gear/pack_list.html' %}
     
     {% include 'includes/weather_forecast.html' %}
 
