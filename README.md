@@ -77,6 +77,25 @@ Once uploaded, your activity will be available on your profile page as well as t
 
 We would like to thank all of the open source projects that made this work possible.
 
+## Cloning
+
+API Keys will be needed for OpenWeatherMap, Mapbox, AWS S3.  An IAM user must be created for AWS S3 to generate presigned URLs
+for uploading and serving images that users upload.  These keys will need to be added to several files.
+
+A secret.py file must be created, following the structure in secret_format.py.  Your API keys will be pasted as strings into those folders.
+
+A flask secret key should be generated following the documentation on the Flask framework's website.  
+
+Your mapbox API key needs to be pasted into 'templates/includes/maps/mapbox_api_key.html'
+
+Setup a virtual envirenment using the following command "python3 -m venv/venv", and activate it using "source venv/bin/activate"
+
+Install dependencies using "pip3 install -r requirements.txt"
+
+Once that is setup, create a postgresql database named SOKA.  Seed the database by running the command 'python3 seed.py' from the root directory.
+
+start your flask development server using "flask run".
+
 ### API for data gathering and visualization
 
 ###### Weather data
