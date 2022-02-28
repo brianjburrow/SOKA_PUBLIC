@@ -31,7 +31,6 @@ Last is a gear checklist, this feature will display all gear that you have uploa
 
 Navigating to the My Gear tab will display a list of gear next to your user information.  Of course, this will be empty the first time you visit the site.  Your user card should have a button to upload your gear.  
 
-gear_page_empty.png
 ![alt text](https://github.com/brianjburrow/SOKA/blob/main/readme_images/gear_page_empty.png)
 
 Click on this to add gear to your gearshed.  Make sure to weigh your gear in your preferred units (e.g., pounds, grams, etc.).  Whatever unit you choose, be sure to be consistent so that pack weights can be added correctly.  
