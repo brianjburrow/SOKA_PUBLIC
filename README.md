@@ -96,6 +96,8 @@ Once that is setup, create a postgresql database named SOKA.  Seed the database 
 
 start your flask development server using "flask run".
 
+Unit tests can be run by copying the commands from "test_commands.txt" and pasting them directly into your terminal.  This will run the tests one at a time.
+
 ### API for data gathering and visualization
 
 ###### Weather data
