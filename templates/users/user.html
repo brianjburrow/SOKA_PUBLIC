@@ -8,14 +8,14 @@
 
 <div class="row">
     <span class="col-12 col-lg-3">
-        {% include 'includes/user_card.html' %}
+        {% include 'includes/users/user_card.html' %}
     </span>
     <span class="col-0 col-lg-1"></span>
     <span class='col-12 col-lg-8 gx-0'>
         <div class="row">
             {% for activity in activities %}
                 <div class="col-12">
-                    {% include 'includes/activity_card.html' %}
+                    {% include 'includes/activities/activity_card.html' %}
                 </div>
             {% endfor %}
         </div>

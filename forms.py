@@ -65,7 +65,8 @@ class NewUserForm(FlaskForm):
     location = StringField('Location', validators=[Length(min=1,max=100, message="Location name must be less than 100 characters in length.")])
     email = StringField('Email', validators=[InputRequired("Must provide a valid email address"), Email("Must provide a valid email address"),
     Length(min=1,  max=100, message="Email address must be less than 100 characters in length.")])
-    password = PasswordField(validators=[InputRequired("Must provide a password")])
+    password = PasswordField(validators=[InputRequired("Must provide a password"),
+    Length(min = 5, max = 30, message="Password must be between 5 and 30 characters inclusive.")])
     confirm = PasswordField()
 
 class EditUserForm(FlaskForm):

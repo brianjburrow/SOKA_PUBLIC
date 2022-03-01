@@ -181,6 +181,8 @@ def delete_user(user_id):
         return redirect(f'/users/{g.user.id}')
     User.query.filter_by(id=user_id).delete()
     db.session.commit()
+    # remove user from the session
+    session.clear()
     return redirect('/register')
 
 @app.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])

@@ -39,7 +39,7 @@
         </div>
         <form action="/users/{{g.user.id}}/delete" method="POST">
         <div class="row gx-0">
-                <button id='delete-account-btn' class="btn btn-light btn-block">Delete Account</button>
+                <button id='{{user.id}}-delete' class="btn btn-light btn-block">Delete Account</button>
         </div>
         </form>
         {% else %}

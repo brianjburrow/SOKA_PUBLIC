@@ -9,14 +9,14 @@
 <div class="row">
     <span class="col-3 d-none d-lg-block">
         {% if g.user %}
-        {% include 'includes/logged_in_user_card.html' %}
+        {% include 'includes/users/logged_in_user_card.html' %}
         {% else %} 
-        {% include 'includes/register_card.html' %}
+        {% include 'includes/users/register_card.html' %}
         {% endif %}
     </span>
     <span class="col-lg-1"></span>
     <span class='col-sm-12 col-lg-7 g-0'>
-        {% include 'includes/landmark_card.html' %}
+        {% include 'includes/landmarks/landmark_card.html' %}
     </span>
     <span class="col-lg-1"></span>
 </div>
@@ -37,7 +37,7 @@
 <span class="col-lg-1"></span>
 <span class='col-sm-12 col-lg-7 gx-0'>
     {% for activity in activities %}
-    {% include 'includes/activity_card.html' %}
+    {% include 'includes/activities/activity_card.html' %}
     {% endfor %}
 </span>
 <span class="col-lg-1"></span>

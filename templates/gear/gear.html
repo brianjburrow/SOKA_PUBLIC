@@ -7,7 +7,7 @@ All Gear
 {% block content %}
 <div class="row user-list">
     <span class="col-12 col-lg-3">
-        {% include 'includes/logged_in_user_card.html' %}
+        {% include 'includes/users/logged_in_user_card.html' %}
     </span>
     <span class="col-0 col-lg-1"></span>
     <span class='col-12 col-lg-8 gx-0'>
@@ -15,7 +15,7 @@ All Gear
             {% for item in gear %}
             <div class="col-0 col-lg-1"></div>
             <div class="col-12 col-lg-5">
-                {% include 'includes/gear_card.html' %}
+                {% include 'includes/gear/gear_card.html' %}
             </div>
             {% endfor %}
         </div>
