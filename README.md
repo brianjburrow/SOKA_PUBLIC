@@ -97,6 +97,41 @@ start your flask development server using "flask run".
 
 Unit tests can be run by copying the commands from "test_commands.txt" and pasting them directly into your terminal.  This will run the tests one at a time.
 
+## Current Progress and Future work
+
+While this is a fairly simple application, there are a lot of moving parts.  It's been a great learning experience to see all of the necessary features for making some of my favorite apps work.  Some of these include:
+
+User authentication.
+Database Schema design.
+Mapbox API for displaying maps, and getting GPS routes to display correctly.
+Obtaining weather data from OpenWeatherMaps API.
+Writing the Javascript necessary to toggle through a table cleanly.
+Fixing the card display (e.g., the way a challenge is displayed) and making it look the way that I wanted.
+Fixing bug after bug until the need for unit tests was painfully clear.
+Incorporating Jinja templates into JS code.
+Server side image compression.
+Setting up AWS, generating permissions, generating presigned urls for upload/download.
+Deploying to Heroku.
+Protecting user data with authentication and social media features (e.g., only viewing friend's activities).
+
+While each step is fairly simple on its own, each takes quite a bit of time to learn/troubleshoot/integrate into the remaining features.
+As this is a capstone project for Springboard's full stack development course, I needed to stop somewhere.  However, much is left undone.  A few of these items are:
+
+- Implementing settings, and a proper account page.  
+- Allowing users to block other users from following them (or make follow requests a thing).
+- Uploading a ton of photos, landmarks, and challenges.
+- Monetizing the site by joining affiliate programs, setting up the proper API keys, and bank accounts.
+- Setting up server monitoring to make sure that the API usage costs don't explode.
+- Setting up payments and paywalls for certain features to pay for server costs, development.
+- Setting up geocoding for search/filtering features to make it easier to find landmarks and challenges nearby.
+- Setting up toggles (checkboxes) on the weather forecast API to toggle certain data fields on/off.
+- Adding precipitation chances to weather forecast UI.
+- Setting up chron-jobs to move recently uploaded images to Cloudfront, somewhat recent images to S3, and older images to S3 glacier.
+- Optimizing SQL queries, and implementing pagination to reduce server load and costs.
+
+There are many paths forward, and it is evident why development teams are necessary for building scalable applications.  Time is limited :)
+
+
 ### API for data gathering and visualization
 
 ###### Weather data
