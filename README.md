@@ -72,6 +72,12 @@ If desired, select a challenge from the pull down menu.  Only one challenge may 
 
 Once uploaded, your activity will be available on your profile page as well as the feed of any user who follows you.
 
+![alt text](https://github.com/brianjburrow/SOKA_PUBLIC/blob/main/readme_images/profile.png)
+
+And more details can be obtained by clicking on the activity title.
+
+![alt text](https://github.com/brianjburrow/SOKA_PUBLIC/blob/main/readme_images/activity.png)
+
 ## Cloning
 
 API Keys will be needed for OpenWeatherMap, Mapbox, AWS S3.  An IAM user must be created for AWS S3 to generate presigned URLs
