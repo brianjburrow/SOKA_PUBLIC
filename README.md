@@ -72,10 +72,6 @@ If desired, select a challenge from the pull down menu.  Only one challenge may 
 
 Once uploaded, your activity will be available on your profile page as well as the feed of any user who follows you.
 
-## Enabling Technologies
-
-We would like to thank all of the open source projects that made this work possible.
-
 ## Cloning
 
 API Keys will be needed for OpenWeatherMap, Mapbox, AWS S3.  An IAM user must be created for AWS S3 to generate presigned URLs
@@ -131,6 +127,10 @@ As this is a capstone project for Springboard's full stack development course, I
 
 There are many paths forward, and it is evident why development teams are necessary for building scalable applications.  Time is limited :)- 
 
+
+## Enabling Technologies
+
+We would like to thank all of the open source projects that made this work possible.
 
 ### API for data gathering and visualization
 
