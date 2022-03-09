@@ -8,9 +8,8 @@ from sqlalchemy import ForeignKey
 import io
 from PIL import Image
 import gpxpy
-import gpxpy.gpx as gpx
 from gpx_converter import Converter
-from math import log2, pi, acos, sin, cos, floor
+from math import  pi, acos, sin, cos, floor
 import json
 from flask import current_app
 from werkzeug.utils import secure_filename
@@ -18,11 +17,17 @@ import requests as python_requests
 import logging
 import boto3
 from botocore.exceptions import ClientError
-from helpers import adjust_map_options_boundaries
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
+def adjust_map_options_boundaries(map_options, BUFFER_SIZE = 0.01):
+    '''Allows us to add a buffer to the map, so that the activity doesn't touch the map borders'''
+    map_options["longitude_min"] -= BUFFER_SIZE
+    map_options["latitude_min"]  -= BUFFER_SIZE
+    map_options["longitude_max"] += BUFFER_SIZE
+    map_options["latitude_max"]  += BUFFER_SIZE
+    return map_options
 
 def connect_db(app):
     """

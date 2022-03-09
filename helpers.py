@@ -1,9 +1,23 @@
-import gpxpy
-from gpx_converter import Converter
-from math import log2, pi, acos, sin, cos
-import json
+from flask import  flash, g
+from models import Admin
+from app import db
 
 
+def validate_signed_in(msg):
+    '''Validate that a user is signed in, or flash an error message'''
+    if not g.user:
+        flash(f"{msg}", 'error')
+        return False 
+    return True 
+
+def validate_correct_user(msg, user_id):
+    '''Validate that a database entry has same user_id as the one stored in g'''
+    if g.user.id != user_id:
+        admin_ids = [id_tuple[0] for id_tuple in db.session.query(Admin.user_id).all()]
+        if g.user.id not in admin_ids:
+            flash(f"{msg}", 'error')
+            return False 
+    return True
 
 def adjust_map_options_boundaries(map_options, BUFFER_SIZE = 0.01):
     '''Allows us to add a buffer to the map, so that the activity doesn't touch the map borders'''
