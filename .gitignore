@@ -142,3 +142,7 @@ test_commands.txt
 secret.py 
 ./secret.py 
 /secret.py
+
+*.docx
+
+.DS_Store
