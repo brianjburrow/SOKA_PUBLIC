@@ -8,7 +8,7 @@ SOKA is a social media site for orienteers, explorers, and adventurers that prov
 
 Each challenge consists of a set of landmarks, GPS coordinates, and a set of gear recommendations. It’s up to you to determine your route, mode of transportation, equipment, and time to hit the trails.
 
-SOKA provides you with tools to plan your activity, check local weather forecasts, and gear track of gear usage. Our algorithms will check your activity against the challenge requirements, and our servers will provide a platform for you to share your activities with your friends and families.
+SOKA provides you with tools to plan your activity, check local weather forecasts, and keep track of gear usage. Our algorithms will check your activity against the challenge requirements, and our servers will provide a platform for you to share your activities with your friends and families.
 
 
 ## How to use.
